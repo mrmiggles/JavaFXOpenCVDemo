@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<SplitPane dividerPositions="0.21105527638190955" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" orientation="VERTICAL" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1">
+  <items>
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="134.0" prefWidth="598.0">
+         <children>
+            <Label alignment="CENTER" layoutY="-4.0" prefHeight="37.0" prefWidth="588.0" text="OpenCV Image Tools">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+         </children></AnchorPane>
+      <GridPane prefHeight="236.0" prefWidth="598.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Button id="objectFinder" alignment="CENTER" 
+                    onAction="#handleObjectFinderButton" mnemonicParsing="false" prefHeight="59.0" prefWidth="200.0" text="Scene Object Finder">
+               <GridPane.margin>
+                  <Insets left="50.0" />
+               </GridPane.margin>
+            </Button>
+            <Button alignment="CENTER" mnemonicParsing="false" prefHeight="59.0" prefWidth="200.0" text="Feature Viewer" GridPane.columnIndex="1">
+               <GridPane.margin>
+                  <Insets left="50.0" />
+               </GridPane.margin>
+            </Button>
+            <Button alignment="CENTER" mnemonicParsing="false" prefHeight="59.0" prefWidth="200.0" text="Scene Object Finder" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets left="50.0" />
+               </GridPane.margin>
+            </Button>
+            <Button alignment="CENTER" mnemonicParsing="false" prefHeight="59.0" prefWidth="200.0" text="Scene Object Finder" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <GridPane.margin>
+                  <Insets left="50.0" />
+               </GridPane.margin>
+            </Button>
+         </children>
+      </GridPane>
+  </items>
+</SplitPane>
