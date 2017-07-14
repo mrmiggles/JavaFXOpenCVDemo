@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
@@ -56,14 +57,16 @@
          <children>
             <Label text="Image 1">
                <GridPane.margin>
-                  <Insets left="50.0" />
+                  <Insets bottom="223.0" left="50.0" />
                </GridPane.margin>
             </Label>
             <Label text="Image 2" GridPane.columnIndex="1">
                <GridPane.margin>
-                  <Insets left="50.0" />
+                  <Insets bottom="223.0" left="50.0" />
                </GridPane.margin>
             </Label>
+            <ImageView fx:id="sceneImageView" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="objImageView" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" />
          </children>
       </GridPane>
       <TextArea fx:id="textlog" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2" />

@@ -22,6 +22,8 @@ import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 import javax.imageio.ImageIO;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 /**
  * FXML Controller class
@@ -34,10 +36,8 @@ public class FXMLSceneObjectFinderController implements Initializable {
     @FXML private TextArea textlog;
     @FXML private Button sceneSelector;
     @FXML private Button objectSelector;
-    
-    public FXMLSceneObjectFinderController(){
-        textlog = new TextArea();
-    }
+    @FXML private ImageView sceneImageView;
+    @FXML private ImageView objImageView;
     
     @FXML protected void selectImage2Handler(ActionEvent event){
         File selectedFile = selectFile(event);
@@ -65,18 +65,20 @@ public class FXMLSceneObjectFinderController implements Initializable {
     private void setImageIcon(File file, Object eventSource){
         
         try{
-            BufferedImage image = ImageIO.read(new File(file.getAbsolutePath()));
+            BufferedImage image = ImageIO.read(file);
             if (image == null) {
                 textlog.appendText("The file " + file.getName() + " could not be opened , it is not an image"+ newline);
             } else {
                 //This is where a real application would open the file.
-               textlog.appendText("Opening: " + file.getName() + "." + newline); 
+               textlog.appendText("Opening: " + file.getAbsolutePath() + "." + newline); 
                if(eventSource.equals(sceneSelector)){
-                   textlog.appendText("Scene Selector pressed" + newline);
+                  sceneImageView.setImage(new Image(file.toURI().toString()));
+                  textlog.appendText("Scene set as: " + file.getName() + newline);
                } else if(eventSource.equals(objectSelector)){
-                   textlog.appendText("Object Selector pressed" + newline);
+                   objImageView.setImage(new Image(file.toURI().toString()));
+                  textlog.appendText("Object set as: " + file.getName() + newline);
                }
-               
+               image.flush();               
             }            
         } catch (IOException ex) {
             textlog.appendText("The file " + file.getName() + " could not be opened , an error occurred."+newline);
