@@ -5,6 +5,8 @@
  */
 package offlineapp;
 
+import Detectors.FREAK;
+import FileUtils.ImageSelect;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -24,6 +26,8 @@ import javafx.stage.Stage;
 import javax.imageio.ImageIO;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import org.opencv.core.Mat;
+import org.opencv.core.MatOfKeyPoint;
 
 /**
  * FXML Controller class
@@ -36,32 +40,60 @@ public class FXMLSceneObjectFinderController implements Initializable {
     @FXML private TextArea textlog;
     @FXML private Button sceneSelector;
     @FXML private Button objectSelector;
+    @FXML private Button detectObjButton;
     @FXML private ImageView sceneImageView;
     @FXML private ImageView objImageView;
+    @FXML private ImageView resultsImage;
+    
+    @FXML protected void detectObjectHandler(ActionEvent event){
+        if(sceneImageView.getImage() == null || objImageView.getImage() == null){
+            textlog.appendText("You must select both a scene and an object");
+        } else {
+            
+            try {
+                FREAK freak = new FREAK();
+                freak.useSURFDetector();
+                
+                //set obj keypoints and descriptors
+                freak.setDescriptorsAndKeyPoints(objImageView.getImage());
+                MatOfKeyPoint objDescriptors = freak.getDescriptors();
+                MatOfKeyPoint objKeyPoints = freak.getKeyPoints();
+                Mat objImage = freak.getObjImage();
+                
+                //set scene keypoints and descriptors
+                freak.setDescriptorsAndKeyPoints(sceneImageView.getImage());
+                MatOfKeyPoint sceneDescriptors = freak.getDescriptors();
+                MatOfKeyPoint sceneKeyPoints = freak.getKeyPoints();
+                Mat sceneImage = freak.getObjImage();
+                
+                
+                boolean found = freak.matchDescriptors(objDescriptors, sceneDescriptors);
+                if(found){
+                    textlog.appendText("Match found" + newline);
+                    textlog.appendText("Saving image as 'matches.jpg'" + newline);
+                    freak.drawMatchLines(objKeyPoints, sceneKeyPoints, objImage, sceneImage);
+                    File resultImageFile = new File("matches.jpg");
+                    if(resultImageFile.exists()) resultsImage.setImage(new Image(resultImageFile.toURI().toString()));
+                } else {
+                    textlog.appendText("Match NOT found"+ newline);
+                }
+            } catch (IOException ex) {
+                //Logger.getLogger(ComparisonGUI.class.getName()).log(Level.SEVERE, null, ex);
+                textlog.appendText("Could not compare images");
+            }             
+        }                  
+    }
     
     @FXML protected void selectImage2Handler(ActionEvent event){
-        File selectedFile = selectFile(event);
+        File selectedFile = ImageSelect.GUI(event, "Select Image");
        if (selectedFile != null) setImageIcon(selectedFile, event.getSource());       
     }
     
     @FXML protected void selectImage1Handler(ActionEvent event){
-       File selectedFile = selectFile(event);
+       File selectedFile = ImageSelect.GUI(event, "Select Image");
        if (selectedFile != null) setImageIcon(selectedFile, event.getSource());       
     }
-    
-    private File selectFile(ActionEvent event){
-       FileChooser fileChooser = new FileChooser();
-       fileChooser.setTitle("Open Resource File");
-       fileChooser.getExtensionFilters().addAll(
-            //new ExtensionFilter("Text Files", "*.txt"),
-             //new ExtensionFilter("Audio Files", "*.wav", "*.mp3", "*.aac"),
-             new ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif"),
-             new ExtensionFilter("All Files", "*.*"));
-       Stage app_stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-       File selectedFile = fileChooser.showOpenDialog(app_stage);
-       return selectedFile;
-    }
-    
+        
     private void setImageIcon(File file, Object eventSource){
         
         try{
